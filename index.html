@@ -1,12 +1,78 @@
 <!DOCTYPE html>
-<html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8">
+  <title>AI智能助手</title>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont;
+      background: #f5f6fa;
+      display: flex;
+      justify-content: center;
+      padding-top: 80px;
+    }
+
+    .container {
+      width: 500px;
+      background: white;
+      border-radius: 16px;
+      padding: 24px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .input-group {
+      display: flex;
+      gap: 10px;
+    }
+
+    input {
+      flex: 1;
+      padding: 12px;
+      border-radius: 8px;
+      border: 1px solid #ddd;
+      font-size: 16px;
+    }
+
+    button {
+      padding: 12px 20px;
+      border: none;
+      border-radius: 8px;
+      background: #4f46e5;
+      color: white;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #4338ca;
+    }
+
+    .result {
+      margin-top: 20px;
+      background: #f1f5f9;
+      padding: 16px;
+      border-radius: 10px;
+      white-space: pre-wrap;
+      line-height: 1.6;
+    }
+  </style>
+</head>
+
 <body>
-  <h2>AI自动工具</h2>
+  <div class="container">
+    <h1>🤖 AI智能助手</h1>
 
-  <input id="task" placeholder="输入任务..." style="width:300px"/>
-  <button onclick="run()">执行</button>
+    <div class="input-group">
+      <input id="task" placeholder="比如：佛山天气 / 今日新闻" />
+      <button onclick="run()">执行</button>
+    </div>
 
-  <pre id="result"></pre>
+    <div id="result" class="result">结果会显示在这里...</div>
+  </div>
 
   <script>
     async function run() {
@@ -21,7 +87,8 @@
       });
 
       const data = await res.json();
-      document.getElementById("result").innerText = data.result;
+
+      document.getElementById("result").innerText = data.result || data.error;
     }
   </script>
 </body>
