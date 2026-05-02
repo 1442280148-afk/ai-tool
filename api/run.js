@@ -1,21 +1,28 @@
 export default async function handler(req, res) {
-  const { task } = req.body;
+  try {
+    const { task } = req.body;
 
-  const response = await fetch("https://api.openai.com/v1/responses", {
-    method: "POST",
-    headers: {
-      "Authorization": `Bearer ${process.env.OPENAI_API_KEY}`,
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify({
-      model: "gpt-4.1-mini",
-      input: `请完成任务：${task}`
-    })
-  });
+    const response = await fetch("https://api.moonshot.cn/v1/chat/completions", {
+      method: "POST",
+      headers: {
+        "Authorization": `Bearer ${process.env.KIMI_API_KEY}`,
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        model: "moonshot-v1-8k",
+        messages: [
+          { role: "user", content: task }
+        ]
+      })
+    });
 
-  const data = await response.json();
+    const data = await response.json();
 
-  res.status(200).json({
-    result: data.output[0].content[0].text
-  });
+    const result = data.choices?.[0]?.message?.content || "没有返回内容";
+
+    res.status(200).json({ result });
+
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
 }
